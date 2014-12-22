@@ -1,0 +1,41 @@
+{% filter remove_whitespace %}
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<title>{{ settings.title }}</title>
+	<link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}"/>
+</head>
+<body>
+	{{ boardlist.top }}
+	<header>
+		<h1>{{ settings.title }}</h1>
+		<div class="subtitle">{{ settings.subtitle }}</div>
+	</header>
+	
+	<div class="ban">
+		{% if tweets|count == 0 %}
+			<p style="text-align:center" class="unimportant">(No tweets to show.)</p>
+		{% else %}
+			{% for tweet in tweets %}
+				<div id="tweet{{ tweet.id }}">
+					<p>{{ tweet.body }}</p>
+					{% if tweet.media_url_https %}
+					<img class="media-url-https" src="{{ tweet.media_url_https }}">
+					{% endif %}
+					<p class="unimportant">
+						&mdash; by 
+						<a href="{{ tweet.profile_url }}" target="_blank">@{{ tweet.screen_name }}</a> 
+						at 
+						<a href="{{ tweet.tweet_url }}" target="_blank">{{ tweet.time|date(config.post_date) }}</a>
+					</p>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+	
+	<hr/>
+	<p class="unimportant" style="margin-top:20px;text-align:center;">Powered by <a href="http://tinyboard.org/">Tinyboard</a> {{ config.version }} | <a href="http://tinyboard.org/">Tinyboard</a> Copyright &copy; 2010-2012 Tinyboard Development Group</p>
+</body>
+</html>
+{% endfilter %}
